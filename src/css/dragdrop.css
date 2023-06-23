@@ -1,0 +1,49 @@
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+
+.form-field {
+  margin-bottom: 10px;
+}
+
+.drop-zone {
+  background-color: #f2f2f2;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.drag-over {
+  background-color: #d4d4d4;
+}
+
+.drop-zone p {
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+/* Additional styles for rounded corners and dotted line */
+.drop-zone {
+  position: relative;
+}
+
+.drop-zone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px dotted #ccc;
+  border-radius: 8px;
+}
+

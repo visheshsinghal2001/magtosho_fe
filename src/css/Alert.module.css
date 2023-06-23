@@ -1,0 +1,18 @@
+.alert {
+    position: relative;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: inline-block;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .hide {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+  }
+  
