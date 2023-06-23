@@ -5,7 +5,8 @@ export default function HomeAfterLogin() {
   return (
     <div>
       <NavbarAfterLogin name={props.data.user.name} token={props.data.authorisation.token}/>
-      <Outlet context={[props.data.authorisation.token]}/>
+      token=props.data.authorisation.token
+      <Outlet context={[token]}/>
       
 
     </div>

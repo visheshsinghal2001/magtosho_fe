@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import '../css/dragdrop.css';
 import DragDropFile from './DragDropFile';
+import { useOutletContext } from "react-router-dom";
+const Products = () => {
+  const [token] = useOutletContext();
 
-const Products = (prop) => {
   const [name, setName] = useState('');
   const [authToken, setAuthToken] = useState('');
   const [key, setKey] = useState('');
@@ -37,7 +39,7 @@ const Products = (prop) => {
   method: 'POST',
   headers: {
     // 'Content-Type': 'application/json',
-    'Authorization': `Bearer ${prop.token}`,
+    'Authorization': `Bearer ${token}`,
   },
   body: formData 
   }).then((response)=>{
