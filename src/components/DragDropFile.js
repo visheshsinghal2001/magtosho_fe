@@ -3,8 +3,8 @@ import '../css/dragdrop.css';
 
 
 
-const DragDropFile = ({ name, id }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+const DragDropFile = ({ name, id,selectedFile,setSelectedFile }) => {
+  // 
   const fileInputRef = useRef(null);
   const [dragOver, setDragOver] = useState(false);
 
