@@ -73,9 +73,9 @@ label#icon {
 
 input[type='text'],
 input[type='password'] {
-  width: calc(100% - 100px);
+  width: calc(100% - 50px);
   height: 36px;
-  margin: 13px 0 0 -5px;
+  margin: 13px 0 0 5px;
   padding-left: 10px;
   border-radius: 0 5px 5px 0;
   border: solid 1px #cbc9c9;
