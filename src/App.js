@@ -4,6 +4,7 @@ import { BrowserRouter,Route,Routes } from 'react-router-dom'
 import Register from './components/Register';
 import HomeAfterLogin from './components/HomeAfterLogin';
 import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
 
 import HomeAround from './components/HomeAround';
 import Products from './components/Products';
@@ -23,22 +24,13 @@ function App() {
           <Route path="register" element={<Register ></Register>}/>
           <Route path="login" element={<Login  ></Login>}/>
         </Route>
-        <Route path="/user" element={
-        <HomeAfterLogin data={{
-          authorisation:{
-            token:"urlisGreat"
-          },user:{
-            name:"Vishesh Singhal"
-          }
-        }} url={url}>
-
-        </HomeAfterLogin>
-        }>
-          <Route path="products" element={<Products></Products>} />
-          <Route path="customers" element={<Customer></Customer>} />
-          <Route path="orders" element={<Order></Order>} />
-          <Route path="name" element={  <Name></Name>}></Route>
+         <Route path="/user" element={<PrivateRoute ><HomeAfterLogin /></PrivateRoute>}  >
+                      <Route path="products" element={<PrivateRoute> <Products /></PrivateRoute>}  />
+                      <Route path="customers" element={<PrivateRoute> <Customer /></PrivateRoute>}  />
+                      <Route path="orders" element={<PrivateRoute> <Order /></PrivateRoute>}  />
+                      <Route path="name" element={<PrivateRoute> <Name /></PrivateRoute>}  />
         </Route>
+    
       </Routes>
       </BrowserRouter>
     </div>
@@ -46,3 +38,11 @@ function App() {
 }
 
 export default App;
+
+// data={{
+//   authorisation:{
+//     token:"urlisGreat"
+//   },user:{
+//     name:"Vishesh Singhal"
+//   }
+// }} url={url}

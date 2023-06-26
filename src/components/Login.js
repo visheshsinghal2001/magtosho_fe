@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import styles from '../css/Register.module.css';
+
 import Alert from './AlertBox';
-import { Navigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 export default function Login() {
+  const navigate = useNavigate();
   const [url] = useOutletContext();
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("Registration failed." );
@@ -43,6 +45,7 @@ export default function Login() {
     
         console.log(data)
         localStorage.setItem('dataForAuth', JSON.stringify(data));
+        navigate('/user/products', { replace: true });
         
         // Continue with further logic using the authorization parameter
       })

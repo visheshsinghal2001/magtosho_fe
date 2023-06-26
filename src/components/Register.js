@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import styles from '../css/Register.module.css';
 import Alert from './AlertBox';
+import {  useNavigate } from 'react-router-dom';
 import { useOutletContext } from "react-router-dom";
 
 export default function Register() {
   const [url] = useOutletContext();
-
+  const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("Registration failed." );
   const handleSubmit = (event) => {
@@ -42,6 +43,8 @@ export default function Register() {
       .then((data) => {
         // Access authorization parameter from the response
         localStorage.setItem('authToken', data.authorisation.token);
+        navigate('/user/products', { replace: true });
+      
         // Continue with further logic using the authorization parameter
       })
       .catch((error) => {

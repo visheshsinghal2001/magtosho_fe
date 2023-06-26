@@ -2,6 +2,7 @@ import React from 'react'
 import NavbarAfterLogin from "./NavbarAfterLogin"
 import { Outlet } from 'react-router-dom'
 import styles from '../css/Home.module.css';
+import {  Navigate } from 'react-router-dom';
 export default function HomeAfterLogin(props) {
   const datas = JSON.parse(localStorage.getItem('dataForAuth'));
   const data={
