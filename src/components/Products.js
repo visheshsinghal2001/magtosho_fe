@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import '../css/dragdrop.css';
+import myGif2 from '../resources/loading.gif';
 import DragDropFile from './DragDropFile';
+import Alert from './AlertBox';
 import { useOutletContext } from "react-router-dom";
 const Products = () => {
   const [data] = useOutletContext();
@@ -11,20 +13,19 @@ const Products = () => {
   const [storeName, setStoreName] = useState('');
   const [shippingRequired, setShippingRequired] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-  
+  const [showAlert, setShowAlert] = useState(false);
+  const [message,setMessage]=useState("product Addition failed." );
+  const [success,setSuccess]=useState(false)
+  const [load,setLoad]=useState(false)
   const handleShipping = (event) => {
     setShippingRequired(event.target.checked);
  }
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Perform form submission or data processing here
-    // You can access the form values in the state variables (name, authToken, key, storeName)
-
-    // Reset form fields
+    setLoad(true)
     const formData = new FormData();
     const prod="products";
-    // Append form data
+   
     formData.append('name', name);
     formData.append('authKey', authToken);
     formData.append('key', key);
@@ -46,36 +47,71 @@ const Products = () => {
     'Authorization': `Bearer ${data.token}`,
   },
   body: formData 
-  }).then((response)=>{
+  }).then((response) => {
+    if (!response.ok) {
+      setLoad(false)
+      throw new Error('product Addition failed');
+    }
+    
+
+      return response.json(); // Parse response as JSON
+    
+  })
+  .then((data) => {
+    // Access authorization parameter from the response
+    setLoad(false)
+    setMessage("successFully Added Record")
+    setTimeout(() => {
+      setShowAlert(true);
+      setSuccess(true)
+    }, 0);
+
+    setTimeout(() => {
+      setShowAlert(false);
+      setSuccess(false)
+    }, 1500);
+   
+  })
+  .catch((error) => {
+    let errorMessage = error.message;
+    setLoad(false)
  
-  }).catch((error)=>{
-  
+
+    setMessage(errorMessage)
+    setTimeout(() => {
+      setShowAlert(true);
+    }, 0);
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 1500);
+
   });
   };
   return (
     <div className="form-container">
-      <h1 style={{width:"100%","text-align":"center"}}>Add Products </h1>
-      {/* <hr /> */}
+      <h1 >Add Products </h1>
+ 
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="form-field">
           <label>Name:</label>
           <br />
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <input type="text" value={name} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Auth Token:</label>
           <br />
-          <input type="text" value={authToken} onChange={(e) => setAuthToken(e.target.value)} />
+          <input type="text" value={authToken} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setAuthToken(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Key:</label>
           <br />
-          <input type="text" value={key} onChange={(e) => setKey(e.target.value)} />
+          <input type="text" value={key} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setKey(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Store Name:</label>
           <br />
-          <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
+          <input type="text" value={storeName} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setStoreName(e.target.value)} />
         </div>
 
         <hr />
@@ -91,6 +127,11 @@ const Products = () => {
 
         <button type="submit">Submit</button>
       </form>
+      <div style={{height:"50px", alignItems: "center",justifyContent: "center",display:(load?"flex":"none")}} >
+        <span style={{paddingBottom:"10px"}}>Uploading</span>  
+        <img src={myGif2} style={{width:"50px" }} />
+</div>
+      <Alert message={message} showAlert={showAlert} success={success}/>
     </div>
   );
 };

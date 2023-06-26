@@ -8,9 +8,8 @@ export default function HomeAfterLogin(props) {
     token:datas.authorisation.token,
     url:props.url
   }
-
+console.log(datas.authorisation.token)
   return (
-    // null
     datas &&
     <div className={styles["background"]} styles={{width:"100vw",margin:0}}>
       <NavbarAfterLogin name={datas.user.name} token={datas.authorisation.token}/>

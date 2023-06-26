@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from '../css/Alert.module.css';
 
-export default function Alert({ message, showAlert }) {
+export default function Alert({ message, showAlert,success }) {
   const [visible, setVisible] = useState(showAlert);
 
   useEffect(() => {
@@ -19,8 +19,11 @@ export default function Alert({ message, showAlert }) {
   
   return (
     
-    <div className={`${styles.alert} ${visible ? '' : styles.hide}`}>
+    <div className={`${styles.alert} ${visible ? '' : styles.hide} ${success?styles.success:styles.failure}`}>
       {message}
     </div>
   );
 }
+Alert.defaultProps = {
+  success:false
+};

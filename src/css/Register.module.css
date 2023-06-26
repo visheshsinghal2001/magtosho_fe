@@ -13,6 +13,13 @@ input,label{
   box-sizing: border-box;
  
 }
+.disabled{
+  color:#666;
+  background-color: #a9a9a9;
+}
+.disabled:hover{
+  background: #a9a9a9;
+}
 
 h1 {
   /* padding: 10px 0; */

@@ -19,6 +19,9 @@ export default function NavbarAfterLogin(props) {
         <li  >
           <NavLink to="customers" className={({ isActive }) => (isActive ? styles['active'] : {})}>customers</NavLink>
         </li>
+        <li  >
+          <NavLink to="name" className={({ isActive }) => (isActive ? styles['active'] : {})}>Fetch</NavLink>
+        </li>
 
       </ul>
     </header>

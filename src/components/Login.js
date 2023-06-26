@@ -104,24 +104,24 @@ export default function Login() {
           <label id="icon" htmlFor="name">
             <i className="fas fa-envelope"></i>
           </label>
-          <input type="text" value={email} onChange={onChangeEmail} onInput={onChangeEmail} name="email" id="email" placeholder="Email" required />
+          <input type="text" value={email} onChange={onChangeEmail} onPaste={onChangeEmail} onInput={onChangeEmail} name="email" id="email" placeholder="Email" required />
           <span>{getCheckIcon(emailCheck)}</span> 
           <br />
-         
+
           <label id="icon" htmlFor="name">
             <i className="fas fa-unlock-alt"></i>
           </label>
-          <input type="password" value={password} onChange={onChangePassword}  onInput={onChangePassword} name="password" id="password" placeholder="Password" required />
+          <input type="password" value={password} onChange={onChangePassword}  onPaste={onChangePassword} onInput={onChangePassword} name="password" id="password" placeholder="Password" required />
           <span>{getCheckIcon(passwordCheck)}</span>
           <div className={styles['btn-block']}>
        
-          <button type="submit"  disabled={!isFormValid()} >Submit</button>
+          <button className={`${!isFormValid()?styles.disabled:""}`} type="submit"  disabled={!isFormValid()} >Submit</button>
         </div>
         </form>
+      <Alert message="login failed." showAlert={showAlert} />
       </div>
 
       
-      <Alert message="Registration failed." showAlert={showAlert} />
 
     </div>
   );

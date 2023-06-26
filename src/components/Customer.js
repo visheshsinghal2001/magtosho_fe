@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import '../css/dragdrop.css';
+import myGif2 from '../resources/loading.gif';
 import DragDropFile from './DragDropFile';
+import Alert from './AlertBox';
 import { useOutletContext } from "react-router-dom";
 const Customer = () => {
   const [data] = useOutletContext();
@@ -10,12 +12,16 @@ const Customer = () => {
   const [authToken, setAuthToken] = useState('');
   const [key, setKey] = useState('');
   const [storeName, setStoreName] = useState('');
+  const [load, setLoad] = useState(false);
   
   // arguments
-  const [email_marketing, setEmail_marketing] = useState('');
-  const [tax_exempt, setTax_exempt] = useState('');
-  const [sms_marketing, setSms_marketing] = useState('');
+  const [email_marketing, setEmail_marketing] = useState(false);
+  const [tax_exempt, setTax_exempt] = useState(false);
+  const [sms_marketing, setSms_marketing] = useState(false);
 
+  const [showAlert, setShowAlert] = useState(false);
+  const [message,setMessage]=useState("product Addition failed." );
+  const [success,setSuccess]=useState(false)
 
   const handleEmailMarketing = (event) => {
     setEmail_marketing(event.target.checked);
@@ -33,7 +39,7 @@ const Customer = () => {
  
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setLoad(true)
 
     const formData = new FormData();
     const prod="customers";
@@ -61,10 +67,46 @@ const Customer = () => {
     'Authorization': `Bearer ${data.token}`,
   },
   body: formData 
-  }).then((response)=>{
+  }).then((response) => {
+    if (!response.ok) {
+      setLoad(false)
+      throw new Error('Customer Addition failed');
+    }
+    
 
-  }).catch((error)=>{
-  
+      return response.json(); // Parse response as JSON
+    
+  })
+  .then((data) => {
+    // Access authorization parameter from the response
+    setLoad(false)
+    setMessage("successFully Added Record")
+    setTimeout(() => {
+      setShowAlert(true);
+      setSuccess(true)
+    }, 0);
+
+    setTimeout(() => {
+      setShowAlert(false);
+      setSuccess(false)
+    }, 1500);
+   
+  })
+  .catch((error) => {
+    setLoad(false)
+    let errorMessage = error.message;
+
+ 
+
+    setMessage(errorMessage)
+    setTimeout(() => {
+      setShowAlert(true);
+    }, 0);
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 1500);
+
   });
   };
   return (
@@ -74,22 +116,22 @@ const Customer = () => {
         <div className="form-field">
           <label>Name:</label>
           <br />
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <input type="text" value={name} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Auth Token:</label>
           <br />
-          <input type="text" value={authToken} onChange={(e) => setAuthToken(e.target.value)} />
+          <input type="text" value={authToken} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setAuthToken(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Key:</label>
           <br />
-          <input type="text" value={key} onChange={(e) => setKey(e.target.value)} />
+          <input type="text" value={key} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setKey(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Store Name:</label>
           <br />
-          <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
+          <input type="text" value={storeName} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setStoreName(e.target.value)} />
         </div>
 
         <hr />
@@ -116,8 +158,14 @@ const Customer = () => {
           <DragDropFile id={1} name={"addressw"} selectedFile={address} setSelectedFile={setAddress}/>
           <br />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={load}>Submit</button>
       </form>
+      <div style={{height:"50px", alignItems: "center",justifyContent: "center",display:(load?"flex":"none")}} >
+        <span style={{paddingBottom:"10px"}}>Uploading</span>  
+        <img src={myGif2} style={{width:"50px" }} />
+
+</div>
+      <Alert message={message} showAlert={showAlert} success={success}/>
     </div>
   );
 };

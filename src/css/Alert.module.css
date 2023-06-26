@@ -1,12 +1,18 @@
 .alert {
     position: relative;
-    background-color: #f8d7da;
-    color: #721c24;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 4px;
     display: inline-block;
     transition: opacity 0.3s ease-in-out;
+  }
+  .success {
+    background-color: rgb(195, 248, 195);
+    color:rgb(2, 107, 2)
+  }
+  .failure {
+    background-color: #f8d7da;
+    color: #721c24;
   }
   
   .hide {
