@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import styles from '../css/Register.module.css';
 import Alert from './AlertBox';
+import { useOutletContext } from "react-router-dom";
 
 export default function Register() {
-  
+  const [url] = useOutletContext();
+
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("Registration failed." );
   const handleSubmit = (event) => {
@@ -21,7 +23,7 @@ export default function Register() {
       return false;
     }
   
-    fetch("http://157.230.14.52:9089/api/register", {
+    fetch(url+"/register", {
       method: 'POST',
       body: JSON.stringify({ email: email, name: names, password: password }),
       headers: {

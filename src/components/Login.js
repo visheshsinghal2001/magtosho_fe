@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import styles from '../css/Register.module.css';
 import Alert from './AlertBox';
-
+import { Navigate, useOutletContext } from "react-router-dom";
 export default function Login() {
-  
+  const [url] = useOutletContext();
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("Registration failed." );
   const handleSubmit = (event) => {
@@ -21,7 +21,7 @@ export default function Login() {
       return false;
     }
   
-    fetch("http://157.230.14.52:9089/api/login", {
+    fetch(url+"/login", {
       method: 'POST',
       body: JSON.stringify({ email: email,password: password }),
       headers: {
@@ -30,29 +30,27 @@ export default function Login() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Registration failed');
+          throw new Error("wtf");
         }
-        
+       
 
+        // Navigate({to:"/user/products",replace:true})
           return response.json(); // Parse response as JSON
         
       })
       .then((data) => {
         // Access authorization parameter from the response
     
-
-        localStorage.setItem('authToken', data.authorisation.token);
+        console.log(data)
+        localStorage.setItem('dataForAuth', JSON.stringify(data));
+        
         // Continue with further logic using the authorization parameter
       })
       .catch((error) => {
         let errorMessage = error.message;
 
         // Check if the error is due to JSON parsing failure
-        if ( error.message.includes('JSON')) {
-          errorMessage = 'Email already taken please try again';
-        } else {
-          errorMessage = error.message;
-        }
+       
         // Registration failed, show failure alert
 
         setMessage(errorMessage)

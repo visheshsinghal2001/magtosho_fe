@@ -3,14 +3,18 @@ import '../css/dragdrop.css';
 import DragDropFile from './DragDropFile';
 import { useOutletContext } from "react-router-dom";
 const Products = () => {
-  const [token] = useOutletContext();
+  const [data] = useOutletContext();
 
   const [name, setName] = useState('');
   const [authToken, setAuthToken] = useState('');
   const [key, setKey] = useState('');
   const [storeName, setStoreName] = useState('');
+  const [shippingRequired, setShippingRequired] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
- 
+  
+  const handleShipping = (event) => {
+    setShippingRequired(event.target.checked);
+ }
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -26,7 +30,7 @@ const Products = () => {
     formData.append('key', key);
     formData.append('storeName', storeName);
     formData.append('type', prod);
-    formData.append('shippingRequired', "FALSE");
+    formData.append('shippingRequired', shippingRequired?"TRUE":"FALSE");
     
     
   
@@ -35,22 +39,23 @@ const Products = () => {
       formData.append('file', selectedFile);
     }
 
-    fetch('http://157.230.14.52:9089/api/upload', {
+    fetch(data.url+'/upload', {
   method: 'POST',
   headers: {
     // 'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`,
+    'Authorization': `Bearer ${data.token}`,
   },
   body: formData 
   }).then((response)=>{
-    console.log(response)
+ 
   }).catch((error)=>{
-    console.log(error)
+  
   });
   };
   return (
     <div className="form-container">
-      <h2>Products </h2>
+      <h1 style={{width:"100%","text-align":"center"}}>Add Products </h1>
+      {/* <hr /> */}
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="form-field">
           <label>Name:</label>
@@ -75,8 +80,8 @@ const Products = () => {
 
         <hr />
         <br />
-          <label for="shippingRequired" class="radio">Products need shipping ?</label>
-        <input type="checkbox" value="none" id="shippingRequired" name="gender" />
+          <label htmlFor="shippingRequired" className="radio">Products need shipping ?</label>
+        <input type="checkbox" value="none" onChange={handleShipping}id="shippingRequired" name="gender" />
         {/* <br /> */}
   
           <hr />

@@ -8,7 +8,7 @@ export default function Alert({ message, showAlert }) {
     setVisible(showAlert);
 
     if (showAlert) {
-      console.log("getting till here")
+
       const timer = setTimeout(() => {
         setVisible(false);
       }, 3000);
