@@ -4,12 +4,14 @@ import { Outlet } from 'react-router-dom'
 import styles from '../css/Home.module.css';
 import {  Navigate } from 'react-router-dom';
 export default function HomeAfterLogin(props) {
+
   const datas = JSON.parse(localStorage.getItem('dataForAuth'));
   const data={
     token:datas.authorisation.token,
-    url:props.url
+    url:process.env.REACT_APP_URL
   }
-console.log(datas.authorisation.token)
+  console.log(data)
+
   return (
     datas &&
     <div className={styles["background"]} styles={{width:"100vw",margin:0}}>

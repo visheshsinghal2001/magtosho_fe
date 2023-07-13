@@ -6,6 +6,7 @@ const PrivateRoute = ({ children }) => {
     
         if(!localStorage.getItem('dataForAuth')) 
          return <Navigate to="/login" replace={true} /> // Redirect to login page if not authenticated
+        // return children;
         else {
             return children;
         }

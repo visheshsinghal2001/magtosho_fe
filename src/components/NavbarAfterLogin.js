@@ -1,7 +1,13 @@
 import React from 'react'
 import styles from '../css/navBar.module.css';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 export default function NavbarAfterLogin(props) {
+  const navigate=useNavigate()
+  const logout=()=>{
+    localStorage.removeItem('dataForAuth')
+    navigate('/login', { replace: true })
+    
+}
   return (
    <>
 
@@ -21,6 +27,9 @@ export default function NavbarAfterLogin(props) {
         </li>
         <li  >
           <NavLink to="name" className={({ isActive }) => (isActive ? styles['active'] : {})}>Fetch</NavLink>
+        </li>
+        <li  >
+          <a onClick={logout}>Logout</a>
         </li>
 
       </ul>

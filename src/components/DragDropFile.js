@@ -9,7 +9,8 @@ const DragDropFile = ({ name, id,selectedFile,setSelectedFile }) => {
   const [dragOver, setDragOver] = useState(false);
 
   const handleFileInputChange = (event) => {
-    const file = event.target.file;
+    const file = event.target.files[0];
+    setSelectedFile(file);
     if(file){
       document.getElementById(name+"P").textContent=file.name;
     }else{

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
+import { useState ,useRef} from 'react';
 import styles from '../css/Register.module.css';
 
 import Alert from './AlertBox';
@@ -8,7 +8,32 @@ export default function Login() {
   const navigate = useNavigate();
   const [url] = useOutletContext();
   const [showAlert, setShowAlert] = useState(false);
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  const [emailCheck,setEmailCheck]=useState(false);
+  const [passwordCheck,setPasswordCheck]=useState(false);
   const [message,setMessage]=useState("Registration failed." );
+  const emailField = useRef(null)
+  const passwordField = useRef(null)
+  useEffect(() => {
+    let interval = setInterval(() => {
+      if (emailField.current) {
+        setEmail(emailField.current.value)
+        setEmailCheck((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))?true:false)
+        clearInterval(interval)
+      }
+      if (passwordField.current) {
+        setPassword(passwordField.current.value)
+        //do the same for all autofilled fields
+        setPasswordCheck(password.length>0);
+        clearInterval(interval)
+      }
+    }, 100)
+  })
+ 
+ 
+ 
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!isFormValid()) {
@@ -43,8 +68,12 @@ export default function Login() {
       .then((data) => {
         // Access authorization parameter from the response
     
-        console.log(data)
+   
         localStorage.setItem('dataForAuth', JSON.stringify(data));
+        setTimeout(() => {
+          localStorage.removeItem('dataForAuth')
+          navigate('/login', { replace: true });
+        }, 3600000);
         navigate('/user/products', { replace: true });
         
         // Continue with further logic using the authorization parameter
@@ -69,12 +98,7 @@ export default function Login() {
       });
   };
 
-  const [email,setEmail]=useState("");
-  
-  const [password,setPassword]=useState("");
-  const [emailCheck,setEmailCheck]=useState(false);
-
-  const [passwordCheck,setPasswordCheck]=useState(false);
+ 
   const getCheckIcon = (checkState) => {
     return checkState ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>;
   };
@@ -93,7 +117,7 @@ export default function Login() {
 
   const onChangePassword=(events)=>{
     setPassword(events.target.value);
-    setPasswordCheck(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/.test(password));
+    setPasswordCheck(password.length>0);
   }
 
   return (
@@ -104,17 +128,17 @@ export default function Login() {
           <hr />
 
           <br />
-          <label id="icon" htmlFor="name">
+          <label id="icon" htmlFor="email">
             <i className="fas fa-envelope"></i>
           </label>
-          <input type="text" value={email} onChange={onChangeEmail} onPaste={onChangeEmail} onInput={onChangeEmail} name="email" id="email" placeholder="Email" required />
+          <input ref={emailField} type="text" value={email} onChange={onChangeEmail} onPaste={onChangeEmail} onInput={onChangeEmail} name="email" id="email" placeholder="Email" required />
           <span>{getCheckIcon(emailCheck)}</span> 
           <br />
 
-          <label id="icon" htmlFor="name">
+          <label id="icon" htmlFor="password">
             <i className="fas fa-unlock-alt"></i>
           </label>
-          <input type="password" value={password} onChange={onChangePassword}  onPaste={onChangePassword} onInput={onChangePassword} name="password" id="password" placeholder="Password" required />
+          <input ref={passwordField} type="password" value={password} onChange={onChangePassword}  onPaste={onChangePassword} onInput={onChangePassword} name="password" id="password" placeholder="Password" required />
           <span>{getCheckIcon(passwordCheck)}</span>
           <div className={styles['btn-block']}>
        

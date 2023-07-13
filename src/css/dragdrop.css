@@ -14,7 +14,7 @@
   }
 
 }
-form-container input[type="text"]{
+.form-container input[type="text"]{
   margin-left:1px;
   width:95%;
 }

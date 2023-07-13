@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef ,useEffect} from 'react';
 import myGif2 from '../resources/loading.gif';
 import '../css/dragdrop.css';
 import DragDropFile from './DragDropFile';
@@ -13,7 +13,32 @@ const Order = () => {
   const [storeName, setStoreName] = useState('');
   const [load,setLoad]=useState(false)
   
- 
+  const nameField=useRef(null)
+  const authTokenField=useRef(null)
+  const keyField=useRef(null)
+  const storeNameField=useRef(null)
+  useEffect(() => {
+    let interval = setInterval(() => {
+     
+      if (nameField.current) {
+        setName(nameField.current.value)
+        clearInterval(interval)
+      }
+      if (authTokenField.current) {
+        setAuthToken(authTokenField.current.value)
+        clearInterval(interval)
+      }
+      if (keyField.current) {
+        setKey(keyField.current.value)
+        clearInterval(interval)
+      }
+      if (storeNameField.current) {
+        setStoreName(storeNameField.current.value)
+        clearInterval(interval)
+      }
+   
+    }, 100)
+  })
 //file uploads
   const [address, setAddress] = useState(null);
   const [order, setOrder] = useState(null);
@@ -115,22 +140,22 @@ const Order = () => {
         <div className="form-field">
           <label>Name:</label>
           <br />
-          <input type="text" value={name} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setName(e.target.value)} />
+          <input ref={nameField} type="text" value={name} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Auth Token:</label>
           <br />
-          <input type="text" value={authToken} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setAuthToken(e.target.value)} />
+          <input ref={authTokenField} type="text" value={authToken} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setAuthToken(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Key:</label>
           <br />
-          <input type="text" value={key} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setKey(e.target.value)} />
+          <input ref={keyField} type="text" value={key} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setKey(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Store Name:</label>
           <br />
-          <input type="text" value={storeName} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setStoreName(e.target.value)} />
+          <input ref={storeNameField} type="text" value={storeName} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setStoreName(e.target.value)} />
         </div>
 
         <hr />

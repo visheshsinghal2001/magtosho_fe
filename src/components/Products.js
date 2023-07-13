@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef ,useEffect} from 'react';
 import '../css/dragdrop.css';
 import myGif2 from '../resources/loading.gif';
 import DragDropFile from './DragDropFile';
@@ -12,19 +12,50 @@ const Products = () => {
   const [key, setKey] = useState('');
   const [storeName, setStoreName] = useState('');
   const [shippingRequired, setShippingRequired] = useState('');
+  const [version, setVersion] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("product Addition failed." );
   const [success,setSuccess]=useState(false)
   const [load,setLoad]=useState(false)
+  const nameField=useRef(null)
+  const authTokenField=useRef(null)
+  const keyField=useRef(null)
+  const storeNameField=useRef(null)
+  useEffect(() => {
+    let interval = setInterval(() => {
+     
+      if (nameField.current) {
+        setName(nameField.current.value)
+        clearInterval(interval)
+      }
+      if (authTokenField.current) {
+        setAuthToken(authTokenField.current.value)
+        clearInterval(interval)
+      }
+      if (keyField.current) {
+        setKey(keyField.current.value)
+        clearInterval(interval)
+      }
+      if (storeNameField.current) {
+        setStoreName(storeNameField.current.value)
+        clearInterval(interval)
+      }
+   
+    }, 100)
+  })
+
   const handleShipping = (event) => {
     setShippingRequired(event.target.checked);
+ }
+  const handleVersion = (event) => {
+    setVersion(event.target.checked);
  }
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoad(true)
     const formData = new FormData();
-    const prod="products";
+    const prod=version?"productsV1":"products";
    
     formData.append('name', name);
     formData.append('authKey', authToken);
@@ -48,6 +79,7 @@ const Products = () => {
   },
   body: formData 
   }).then((response) => {
+
     if (!response.ok) {
       setLoad(false)
       throw new Error('product Addition failed');
@@ -96,28 +128,31 @@ const Products = () => {
         <div className="form-field">
           <label>Name:</label>
           <br />
-          <input type="text" value={name} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setName(e.target.value)} />
+          <input ref={nameField} type="text" value={name} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Auth Token:</label>
           <br />
-          <input type="text" value={authToken} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setAuthToken(e.target.value)} />
+          <input ref={authTokenField} type="text" value={authToken} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setAuthToken(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Key:</label>
           <br />
-          <input type="text" value={key} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setKey(e.target.value)} />
+          <input ref={keyField} type="text" value={key} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setKey(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Store Name:</label>
           <br />
-          <input type="text" value={storeName} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setStoreName(e.target.value)} />
+          <input ref={storeNameField} type="text" value={storeName} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setStoreName(e.target.value)} />
         </div>
 
         <hr />
         <br />
           <label htmlFor="shippingRequired" className="radio">Products need shipping ?</label>
-        <input type="checkbox" value="none" onChange={handleShipping}id="shippingRequired" name="gender" />
+        <input type="checkbox" value="none" onChange={handleShipping}id="shippingRequired" name="shippingRequired" />
+         <br></br>
+          <label htmlFor="magento v1.9" className="radio">Are products version magv1.9 ?</label>
+        <input type="checkbox" value="none" onChange={handleVersion}id="version" name="version" />
         {/* <br /> */}
   
           <hr />

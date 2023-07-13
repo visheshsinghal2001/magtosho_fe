@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
+import { useState , useRef} from 'react';
 import styles from '../css/Register.module.css';
 import Alert from './AlertBox';
 import {  useNavigate } from 'react-router-dom';
@@ -10,6 +10,38 @@ export default function Register() {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("Registration failed." );
+  const emailField = useRef(null)
+  const nameField = useRef(null)
+  const passwordField = useRef(null)
+  const [email,setEmail]=useState("");
+  const [names,setName]=useState("");
+  const [password,setPassword]=useState("");
+
+  const [emailCheck,setEmailCheck]=useState(false);
+  const [namesCheck,setNameCheck]=useState(false);
+  const [passwordCheck,setPasswordCheck]=useState(false);
+  useEffect(() => {
+    let interval = setInterval(() => {
+      if (emailField.current) {
+        setEmail(emailField.current.value)
+        setEmailCheck((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))?true:false)
+        clearInterval(interval)
+      }
+      if (nameField.current) {
+        setName(nameField.current.value)
+        setNameCheck(isValidName(names))
+        //do the same for all autofilled fields
+        clearInterval(interval)
+      }
+      if (passwordField.current) {
+        setPassword(passwordField.current.value)
+        //do the same for all autofilled fields
+        setPasswordCheck(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/.test(password));
+        clearInterval(interval)
+      }
+    }, 100)
+  })
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!isFormValid()) {
@@ -73,13 +105,7 @@ export default function Register() {
   
 
 
-  const [email,setEmail]=useState("");
-  const [names,setName]=useState("");
-  const [password,setPassword]=useState("");
-
-  const [emailCheck,setEmailCheck]=useState(false);
-  const [namesCheck,setNameCheck]=useState(false);
-  const [passwordCheck,setPasswordCheck]=useState(false);
+ 
   const getCheckIcon = (checkState) => {
     return checkState ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>;
   };
@@ -123,19 +149,19 @@ export default function Register() {
           <label id="icon" htmlFor="name">
             <i className="fas fa-envelope"></i>
           </label>
-          <input type="text" value={email} onChange={onChangeEmail} onPaste={onChangeEmail}  onInput={onChangeEmail} name="email" id="email" placeholder="Email" required />
+          <input   ref={emailField} type="text" value={email} onChange={onChangeEmail} onPaste={onChangeEmail}  onInput={onChangeEmail} name="email" id="email" placeholder="Email" required />
           <span>{getCheckIcon(emailCheck)}</span> 
           <br />
           <label id="icon" htmlFor="name">
             <i className="fas fa-user"></i>
           </label>
-          <input type="text" value={names} onChange={onChangeName} onPaste={onChangeName} onInput={onChangeName} name="name" id="name" placeholder="Name" required />
+          <input   ref={nameField} type="text" value={names} onChange={onChangeName} onPaste={onChangeName} onInput={onChangeName} name="name" id="name" placeholder="Name" required />
           <span>{getCheckIcon(namesCheck)}</span>
           <br />
           <label id="icon" htmlFor="name">
             <i className="fas fa-unlock-alt"></i>
           </label>
-          <input type="password" value={password} onChange={onChangePassword} onPaste={onChangePassword}   onInput={onChangePassword} name="password" id="password" placeholder="Password" required />
+          <input   ref={passwordField} type="password" value={password} onChange={onChangePassword} onPaste={onChangePassword}   onInput={onChangePassword} name="password" id="password" placeholder="Password" required />
           <span>{getCheckIcon(passwordCheck)}</span>
           <div className={styles['btn-block']}>
 
