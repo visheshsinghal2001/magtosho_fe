@@ -11,6 +11,7 @@ const Products = () => {
   const [authToken, setAuthToken] = useState('');
   const [key, setKey] = useState('');
   const [storeName, setStoreName] = useState('');
+  const [prefix, setPrefix] = useState('');
   const [shippingRequired, setShippingRequired] = useState('');
   const [version, setVersion] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -19,6 +20,7 @@ const Products = () => {
   const [success,setSuccess]=useState(false)
   const [load,setLoad]=useState(false)
   const nameField=useRef(null)
+  const prefixField=useRef(null)
   const authTokenField=useRef(null)
   const keyField=useRef(null)
   const storeNameField=useRef(null)
@@ -39,6 +41,10 @@ const Products = () => {
       }
       if (storeNameField.current) {
         setStoreName(storeNameField.current.value)
+        clearInterval(interval)
+      }
+      if (prefixField.current) {
+        setPrefix(prefixField.current.value)
         clearInterval(interval)
       }
    
@@ -62,6 +68,7 @@ const Products = () => {
     formData.append('key', key);
     formData.append('storeName', storeName);
     formData.append('type', prod);
+    formData.append('prefix', prefix);
     formData.append('shippingRequired', shippingRequired?"TRUE":"FALSE");
     
     
@@ -144,6 +151,11 @@ const Products = () => {
           <label>Store Name:</label>
           <br />
           <input ref={storeNameField} type="text" value={storeName} onPaste={(e) => setStoreName(e.target.value)} onChange={(e) => setStoreName(e.target.value)} />
+        </div>
+        <div className="form-field">
+          <label>Prefix:</label>
+          <br />
+          <input ref={prefixField} type="text" value={prefix} onPaste={(e) => setPrefix(e.target.value)} onChange={(e) => setPrefix(e.target.value)} />
         </div>
 
         <hr />
